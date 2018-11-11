@@ -3,6 +3,7 @@
   <persistence-unit name="TrabalhoJpa2PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Model.Cidade</class>
+    <class>Model.Fornecedor</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa2?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="admin"/>

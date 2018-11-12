@@ -2,7 +2,6 @@ package Controller;
 
 import Conexao.Dados;
 import Model.Fornecedor;
-import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.Query;
 

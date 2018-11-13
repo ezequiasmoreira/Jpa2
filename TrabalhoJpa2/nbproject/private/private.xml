@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Controller/DaoCliente.java</file>
-            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/View/DialogCLiente.java</file>
-            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Model/Cliente.java</file>
-            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Model/Fornecedor.java</file>
-            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Controller/DaoFornecedor.java</file>
+            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Controller/DaoProduto.java</file>
+            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Model/Produto.java</file>
+            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Controller/DaoVenda.java</file>
+            <file>file:/C:/JavaJpa/TrabalhoJpa2/src/Model/Venda.java</file>
         </group>
     </open-files>
 </project-private>

@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "PEDIDO_ITENS")
@@ -30,32 +28,8 @@ public class PedidoItens implements Serializable{
     
     @SwingColumn(description = "Desconto",colorOfBackgound = "")
     @Column(name = "DESCONTO", nullable = false)
-    private double desconto;
+    private double desconto;    
     
-    @SwingColumn(description = "Preço",colorOfBackgound = "")
-    @Column(name = "PRECO", nullable = false)
-    private double precoProduto;
-    
-    @SwingColumn(description = "Estoque",colorOfBackgound = "")
-    @Column(name = "ESTOQUE", nullable = false)
-    private double estoque;
-    
-    @SwingColumn(description = "Data",colorOfBackgound = "")
-     @Temporal(TemporalType.DATE)
-    @Column(name = "DATA", nullable = false)
-    private Date data;
-    
-    @SwingColumn(description = "Cliente",colorOfBackgound = "")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CLIENTE", nullable = false, referencedColumnName = "ID")
-    private Cliente cliente;
-    
-    @SwingColumn(description = "Funcionario",colorOfBackgound = "")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_FUNCIONARIO", nullable = false, referencedColumnName = "ID")
-    private Funcionario funcionario;
-    
-    @SwingColumn(description = "Venda",colorOfBackgound = "")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_VENDA", nullable = false, referencedColumnName = "ID")
     private Venda venda;
@@ -68,20 +42,13 @@ public class PedidoItens implements Serializable{
     public PedidoItens(){
     }
 
-    public PedidoItens(int id, double quantidade, double desconto, double precoProduto, double estoque, Date data, Cliente cliente, Funcionario funcionario, Venda venda, Produto produto) {
+    public PedidoItens(int id, double quantidade, double desconto, Venda venda, Produto produto) {
         this.id = id;
         this.quantidade = quantidade;
         this.desconto = desconto;
-        this.precoProduto = precoProduto;
-        this.estoque = estoque;
-        this.data = data;
-        this.cliente = cliente;
-        this.funcionario = funcionario;
         this.venda = venda;
         this.produto = produto;
     }
-
-    
     
     public int getId() {
         return id;
@@ -91,9 +58,6 @@ public class PedidoItens implements Serializable{
     }
     public Date getData() {
         return venda.getDataEfetuada();
-    }
-    public double getEstoque() {
-        return produto.getSaldo();
     }
     public String getCliente() {
         return venda.getCliente().getNome();

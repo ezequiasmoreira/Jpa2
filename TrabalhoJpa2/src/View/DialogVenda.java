@@ -119,10 +119,8 @@ public class DialogVenda extends javax.swing.JDialog {
                     0,
                     textQuantidade.getText().isEmpty() ? 1 : Double.parseDouble(textQuantidade.getText()),
                     textDesconto.getText().isEmpty() ? 0 : Double.parseDouble(textDesconto.getText()),
-                    
                     dao.getVenda(idVenda),
-                    produto.getProduto(Integer.parseInt(textIdProduto.getText())),
-                    
+                    produto.getProduto(Integer.parseInt(textIdProduto.getText())) 
                 ));
     }
     //preencher os componentes com o objeto
@@ -704,14 +702,16 @@ public class DialogVenda extends javax.swing.JDialog {
                 int idVenda     = dao.getUltimaVenda();
                 pedidoItens.addPedidoItens(populateObjectPedido(idVenda));
                 int idPedido    = pedidoItens.getUltimoPedido();
-                System.out.println(idPedido + "");
-                this.atualizaSaldo(idPedido,"+");
-                textIdVenda.setText(idVenda+"");
-                this.carregaPedidoItens(idVenda);
-                this.atualizaTotal(idVenda);
-                comboFuncionario.setEnabled(false);
-                textCliente.setEditable(false);
-                tableCliente.setEnabled(false);
+                if(idPedido > 0){
+                    System.out.println(idPedido + "");
+                    this.atualizaSaldo(idPedido,"+");
+                    textIdVenda.setText(idVenda+"");
+                    this.carregaPedidoItens(idVenda);
+                    this.atualizaTotal(idVenda);
+                    comboFuncionario.setEnabled(false);
+                    textCliente.setEditable(false);
+                    tableCliente.setEnabled(false);
+                }
             }else{
                 int idVenda = Integer.parseInt(textIdVenda.getText());
                 pedidoItens.addPedidoItens(populateObjectPedido(idVenda));

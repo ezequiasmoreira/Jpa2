@@ -2,10 +2,6 @@ package Controller;
 
 import Conexao.Dados;
 import Model.Funcionario;
-import Tipos.TipoSexo;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Query;
 

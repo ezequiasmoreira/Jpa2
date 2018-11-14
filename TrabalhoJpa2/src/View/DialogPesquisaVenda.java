@@ -1,0 +1,340 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View;
+
+import Controller.DaoPedidoItens;
+import Controller.DaoVenda;
+import Model.PedidoItens;
+import Model.Venda;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import staticas.Staticas;
+
+/**
+ *
+ * @author Ezequias e Karol
+ */
+public class DialogPesquisaVenda extends javax.swing.JDialog {
+    private DaoPedidoItens dao = new DaoPedidoItens();
+    
+    
+    private List<PedidoItens> filtraPorCodigo(List<PedidoItens> codigos){
+        
+        LinkedList<PedidoItens> listCodigos =  new LinkedList<>(); 
+        int codigoVenda =  textCodigo.getText().isEmpty() ? 0 : Integer.parseInt(textCodigo.getText());
+        
+        for (PedidoItens codigo : codigos) {
+            if (textCodigo.getText().isEmpty()){
+                listCodigos.add(codigo); 
+            }else{
+                if (codigo.getVenda().getId() == (codigoVenda)){
+                    listCodigos.add(codigo);
+                }              
+            }
+        }
+       return listCodigos; 
+    }
+    private List<PedidoItens> filtraPorCliente(List<PedidoItens> listCodigos){
+        LinkedList<PedidoItens> listClientes =  new LinkedList<>();
+        for (PedidoItens listCodigo : listCodigos) {
+            if (textCliente.getText().isEmpty()){
+                listClientes.add(listCodigo); 
+            }else{
+                if (listCodigo.getVenda().getCliente().getNome().contains(textCliente.getText().toUpperCase())){
+                    listClientes.add(listCodigo);
+                }              
+            }
+        }
+        return listClientes;
+    }
+    private List<PedidoItens> filtraPorProduto(List<PedidoItens> listClientes){
+        LinkedList<PedidoItens> listProdutos =  new LinkedList<>();
+        for (PedidoItens listCliente : listClientes) {
+            if (textProduto.getText().isEmpty()){
+                listProdutos.add(listCliente); 
+            }else{
+                if (listCliente.getProduto().getNome().contains(textProduto.getText().toUpperCase())){
+                    listProdutos.add(listCliente);
+                }              
+            }
+        }
+        return listProdutos;
+    }
+    private void fimDosFiltrosdePedido(List<PedidoItens> ultimaListas) throws SQLException{
+        LinkedList<PedidoItens> listfiltos =  new LinkedList<>();
+        for (PedidoItens ultimaLista : ultimaListas) {
+            listfiltos.add(ultimaLista);
+        }  
+        this.carregarTabelaConsultaVenda(listfiltos);
+    }
+    private void carregaVenda() throws SQLException{
+        //busca todos os pedidos 
+        List<PedidoItens> pedidos           =  dao.getPedidoVendaList();
+        //filtra vendas por codigo
+        List<PedidoItens> listCodigos        =  this.filtraPorCodigo(pedidos);
+        //filtra vendas por cliente
+        List<PedidoItens> listClientes      =  this.filtraPorCliente(listCodigos);
+        //filtra vendas por produto
+        List<PedidoItens> listProdutos      =  this.filtraPorProduto(listClientes);
+        
+        //fim dos filtros de pedido
+        this.fimDosFiltrosdePedido(listProdutos);
+    }
+    private List<Venda> converterPedidoEmVenda(LinkedList<PedidoItens> listfiltos) throws SQLException{  
+        DaoVenda venda = new DaoVenda();
+        LinkedList<Venda> listVenda =  new LinkedList<>();
+        
+        for (PedidoItens listfilto : listfiltos) {
+            List<Venda> listas = venda.getVendaList(listfilto.getVenda().getId());
+            for (Venda lista : listas) {
+                listVenda.add(lista);                
+            }
+        }
+        return listVenda;
+    }
+    private List<Venda> getVendaPorId(int idvenda) throws SQLException{  
+        DaoVenda venda = new DaoVenda();
+        LinkedList<Venda> listVenda =  new LinkedList<>();
+        
+        List<Venda> listas = venda.getVendaList(idvenda);
+        for (Venda lista : listas) {
+            listVenda.add(lista);                
+        }        
+        return listVenda;
+    }
+    private void carregarTabelaConsultaVenda(LinkedList<PedidoItens> listfiltos) throws SQLException{  
+         List<Venda> listvenda = this.converterPedidoEmVenda(listfiltos);
+        tableVenda.setModel(
+            new MyTableModel(Venda.class, listvenda, tableVenda)
+        );
+    }
+
+
+    /**
+     * Creates new form DialogPesquisaVenda
+     */
+    public DialogPesquisaVenda(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        textCodigo = new javax.swing.JTextField();
+        textProduto = new javax.swing.JTextField();
+        textCliente = new javax.swing.JTextField();
+        buttonPesquisar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        checkBoxAjuda = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableVenda = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa de vendas");
+
+        buttonPesquisar.setText("Pesquisar");
+        buttonPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPesquisarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Código");
+
+        jLabel2.setText("Produto");
+
+        jLabel3.setText("Cliente");
+
+        checkBoxAjuda.setText("Ajuda");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(textProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonPesquisar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(checkBoxAjuda)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(checkBoxAjuda)))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonPesquisar))
+                .addContainerGap())
+        );
+
+        tableVenda.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableVendaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableVenda);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
+        try {
+            this.carregaVenda();
+        } catch (SQLException ex) {
+            Logger.getLogger(DialogPesquisaVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonPesquisarActionPerformed
+
+    private void tableVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVendaMouseClicked
+         try{
+            if(evt.getClickCount()==2){
+               for(Venda venda : Staticas.getListaStaticaVenda()){
+                  Staticas.getListaStaticaVenda().remove(); 
+               }
+                String valor = tableVenda.getValueAt(tableVenda.getSelectedRow(), 0)+"";
+                int codigo = Integer.parseInt(valor);
+                List<Venda> listvenda = this.getVendaPorId(codigo);
+                
+                for (Venda list : listvenda) {
+                    Staticas.getListaStaticaVenda().add( new Venda(
+                            list.getId(),
+                            list.getDataEfetuada(),                            
+                            list.getFuncionario(),
+                            list.getCliente()                            
+                    ));
+                } 
+            }
+            if(checkBoxAjuda.isSelected()){
+                JOptionPane.showMessageDialog(null, "feche a janela e clique no botão ok para usar esta venda");
+            }
+        }catch(SQLException ex){
+            System.out.println("Erro: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_tableVendaMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(DialogPesquisaVenda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DialogPesquisaVenda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DialogPesquisaVenda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DialogPesquisaVenda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                DialogPesquisaVenda dialog = new DialogPesquisaVenda(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonPesquisar;
+    private javax.swing.JCheckBox checkBoxAjuda;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableVenda;
+    private javax.swing.JTextField textCliente;
+    private javax.swing.JTextField textCodigo;
+    private javax.swing.JTextField textProduto;
+    // End of variables declaration//GEN-END:variables
+}

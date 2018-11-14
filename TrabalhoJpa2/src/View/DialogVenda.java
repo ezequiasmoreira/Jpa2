@@ -53,18 +53,18 @@ public class DialogVenda extends javax.swing.JDialog {
         }
     }
     
-    private void carregaFuncionario() throws SQLException{       
+    private void carregaFuncionario(){       
         DefaultComboBoxModel cbm = new DefaultComboBoxModel(
         new Vector(new DaoFuncionario().getFuncionarioList()));
         comboFuncionario.setModel(cbm); 
     }
-    private void carregaProduto() throws SQLException{
+    private void carregaProduto(){
         List<Produto> lista = produto.getProdutoList();
         tableProduto.setModel(
             new MyTableModel(Produto.class, lista, tableProduto)
         );  
     }
-    private void carregaCliente() throws SQLException{
+    private void carregaCliente(){
         List<Cliente> lista = cliente.getClienteList();
         tableCliente.setModel(
             new MyTableModel(Cliente.class, lista, tableCliente)
@@ -76,14 +76,14 @@ public class DialogVenda extends javax.swing.JDialog {
             new MyTableModel(Cliente.class, lista, tableCliente)
         );  
     }
-    private void carregaProduto(String filtro) throws SQLException{        
+    private void carregaProduto(String filtro){        
         List<Produto> lista = produto.getProdutoList(filtro);
         tableProduto.setModel(
             new MyTableModel(Produto.class, lista, tableProduto)
         ); 
     }
     
-    private void carregaPedidoItens(int IdVenda) throws SQLException{
+    private void carregaPedidoItens(int IdVenda){
         List<PedidoItens> lista = pedidoItens.getPedidoItensList(IdVenda);
         tablePedidoItens.setModel(
             new MyTableModel(PedidoItens.class, lista, tablePedidoItens)
@@ -105,12 +105,11 @@ public class DialogVenda extends javax.swing.JDialog {
         tableCliente.setEnabled(true);
     }
     //cria um objeto a partir da tela
-    private Venda populateObject() throws ParseException, SQLException{
-        Date data = sdf.parse(textDataEfetuada.getText());
+    private Venda populateObject() throws ParseException{
         int idCliente = Integer.parseInt(textIdCliente.getText());
         return (new Venda(
                     textIdVenda.getText().isEmpty()?0:Integer.parseInt(textIdVenda.getText()),
-                    new java.sql.Date(data.getTime()),
+                    sdf.parse(textDataEfetuada.getText()),
                     ((Funcionario)comboFuncionario.getSelectedItem()),
                     cliente.getCliente(idCliente)
                 ));
@@ -118,11 +117,12 @@ public class DialogVenda extends javax.swing.JDialog {
     private PedidoItens populateObjectPedido(int idVenda) throws ParseException, SQLException{
         return (new PedidoItens(
                     0,
-                    dao.getVenda(idVenda),
-                    produto.getProduto(Integer.parseInt(textIdProduto.getText())),
                     textQuantidade.getText().isEmpty() ? 1 : Double.parseDouble(textQuantidade.getText()),
                     textDesconto.getText().isEmpty() ? 0 : Double.parseDouble(textDesconto.getText()),
-                    textProduto.getText()
+                    
+                    dao.getVenda(idVenda),
+                    produto.getProduto(Integer.parseInt(textIdProduto.getText())),
+                    
                 ));
     }
     //preencher os componentes com o objeto
@@ -589,16 +589,11 @@ public class DialogVenda extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        
-        try {
-            this.carregaFuncionario();
-            this.carregaProduto();
-            this.carregaCliente();
-            Date data = new Date(System.currentTimeMillis());
-            textDataEfetuada.setText(sdf.format(data));
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.carregaFuncionario();
+        this.carregaProduto();
+        this.carregaCliente();
+        Date data = new Date(System.currentTimeMillis());
+        textDataEfetuada.setText(sdf.format(data));
 
     }//GEN-LAST:event_formWindowOpened
     
@@ -637,27 +632,19 @@ public class DialogVenda extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonRemoverActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
-        try {
-            int idVenda = (textIdVenda.getText().isEmpty())? 0 : Integer.parseInt(textIdVenda.getText());
-            if (idVenda != 0){
-                dao.deleteVenda(dao.getVenda(idVenda));
-                pedidoItens.deleteColecaoPedidoItens(idVenda);
-                this.iniciaComponentes();
-                this.carregaPedidoItens(0);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
+        int idVenda = (textIdVenda.getText().isEmpty())? 0 : Integer.parseInt(textIdVenda.getText());
+        if (idVenda != 0){
+            dao.deleteVenda(dao.getVenda(idVenda));
+            pedidoItens.deleteColecaoPedidoItens(idVenda);
+            this.iniciaComponentes();
+            this.carregaPedidoItens(0);
         }
         
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        try { 
-            this.iniciaComponentes();
-            this.carregaPedidoItens(0);
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.iniciaComponentes();
+        this.carregaPedidoItens(0);
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void textIdVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIdVendaActionPerformed
@@ -666,11 +653,7 @@ public class DialogVenda extends javax.swing.JDialog {
 
     private void buttonPesquisarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarCidadeActionPerformed
         //pesquisa de cidade
-        try {
-            this.carregaProduto(textProduto.getText());
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.carregaProduto(textProduto.getText());
         
     }//GEN-LAST:event_buttonPesquisarCidadeActionPerformed
 
@@ -717,8 +700,10 @@ public class DialogVenda extends javax.swing.JDialog {
                 return;
             }
             if(textIdVenda.getText().isEmpty()){
-                int idVenda     = dao.addVenda(populateObject()); 
-                int idPedido    = pedidoItens.addPedidoItens(populateObjectPedido(idVenda));
+                dao.addVenda(populateObject()); 
+                int idVenda     = dao.getUltimaVenda();
+                pedidoItens.addPedidoItens(populateObjectPedido(idVenda));
+                int idPedido    = pedidoItens.getUltimoPedido();
                 System.out.println(idPedido + "");
                 this.atualizaSaldo(idPedido,"+");
                 textIdVenda.setText(idVenda+"");
@@ -729,7 +714,8 @@ public class DialogVenda extends javax.swing.JDialog {
                 tableCliente.setEnabled(false);
             }else{
                 int idVenda = Integer.parseInt(textIdVenda.getText());
-                int idPedido    = pedidoItens.addPedidoItens(populateObjectPedido(idVenda));
+                pedidoItens.addPedidoItens(populateObjectPedido(idVenda));
+                int idPedido    = pedidoItens.getUltimoPedido();
                 this.atualizaSaldo(idPedido,"+");
                 this.atualizaTotal(idVenda);
                 this.carregaPedidoItens(idVenda);

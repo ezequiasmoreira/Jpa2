@@ -14,7 +14,7 @@ public class DaoVenda {
         Dados.getEntity().persist(venda);
         Dados.getEntity().getTransaction().commit();
     }
-    public int getUltimaVenda() throws SQLException{
+    public int getUltimaVenda(){
         int id = 0;
         for (Venda venda : getVendaList()) {
             id = Math.max(id, venda.getId());

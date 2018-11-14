@@ -46,7 +46,7 @@ public class Funcionario implements Serializable{
     
     @SwingColumn(description = "Data",colorOfBackgound = "")
     @Temporal(TemporalType.DATE)
-    @Column(name = "nascimento", nullable = false)
+    @Column(name = "NASCIMENTO", nullable = false)
     private Date dataNascimento;
     
     @Enumerated(EnumType.STRING)

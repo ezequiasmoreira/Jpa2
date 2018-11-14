@@ -39,7 +39,7 @@ public class DaoProduto {
         query.setParameter(1,pk);
         return query.getResultList(); 
     }
-    public List<Produto> getProdutoList(String filtro) throws SQLException{
+    public List<Produto> getProdutoList(String filtro) {
         String HQL="select p from Produto p where p.nome like ?1 order by p.nome";
         Query query = Dados.getEntity().createQuery(HQL);
         query.setParameter(1, "%"+filtro.toUpperCase()+"%");

@@ -7,6 +7,8 @@
     <class>Model.Cliente</class>
     <class>Model.Funcionario</class>
     <class>Model.Produto</class>
+    <class>Model.PedidoItens</class>
+    <class>Model.Venda</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa2?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="admin"/>

@@ -67,14 +67,14 @@ public class DialogPesquisaVenda extends javax.swing.JDialog {
         }
         return listProdutos;
     }
-    private void fimDosFiltrosdePedido(List<PedidoItens> ultimaListas) throws SQLException{
+    private void fimDosFiltrosdePedido(List<PedidoItens> ultimaListas){
         LinkedList<PedidoItens> listfiltos =  new LinkedList<>();
         for (PedidoItens ultimaLista : ultimaListas) {
             listfiltos.add(ultimaLista);
         }  
         this.carregarTabelaConsultaVenda(listfiltos);
     }
-    private void carregaVenda() throws SQLException{
+    private void carregaVenda(){
         //busca todos os pedidos 
         List<PedidoItens> pedidos           =  dao.getPedidoVendaList();
         //filtra vendas por codigo
@@ -87,7 +87,7 @@ public class DialogPesquisaVenda extends javax.swing.JDialog {
         //fim dos filtros de pedido
         this.fimDosFiltrosdePedido(listProdutos);
     }
-    private List<Venda> converterPedidoEmVenda(LinkedList<PedidoItens> listfiltos) throws SQLException{  
+    private List<Venda> converterPedidoEmVenda(LinkedList<PedidoItens> listfiltos){  
         DaoVenda venda = new DaoVenda();
         LinkedList<Venda> listVenda =  new LinkedList<>();
         
@@ -99,7 +99,7 @@ public class DialogPesquisaVenda extends javax.swing.JDialog {
         }
         return listVenda;
     }
-    private List<Venda> getVendaPorId(int idvenda) throws SQLException{  
+    private List<Venda> getVendaPorId(int idvenda){  
         DaoVenda venda = new DaoVenda();
         LinkedList<Venda> listVenda =  new LinkedList<>();
         
@@ -109,7 +109,7 @@ public class DialogPesquisaVenda extends javax.swing.JDialog {
         }        
         return listVenda;
     }
-    private void carregarTabelaConsultaVenda(LinkedList<PedidoItens> listfiltos) throws SQLException{  
+    private void carregarTabelaConsultaVenda(LinkedList<PedidoItens> listfiltos){  
          List<Venda> listvenda = this.converterPedidoEmVenda(listfiltos);
         tableVenda.setModel(
             new MyTableModel(Venda.class, listvenda, tableVenda)
@@ -247,37 +247,31 @@ public class DialogPesquisaVenda extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
-        try {
-            this.carregaVenda();
-        } catch (SQLException ex) {
-            Logger.getLogger(DialogPesquisaVenda.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        this.carregaVenda();
+        
     }//GEN-LAST:event_buttonPesquisarActionPerformed
 
     private void tableVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVendaMouseClicked
-         try{
-            if(evt.getClickCount()==2){
-               for(Venda venda : Staticas.getListaStaticaVenda()){
-                  Staticas.getListaStaticaVenda().remove(); 
-               }
-                String valor = tableVenda.getValueAt(tableVenda.getSelectedRow(), 0)+"";
-                int codigo = Integer.parseInt(valor);
-                List<Venda> listvenda = this.getVendaPorId(codigo);
-                
-                for (Venda list : listvenda) {
-                    Staticas.getListaStaticaVenda().add( new Venda(
-                            list.getId(),
-                            list.getDataEfetuada(),                            
-                            list.getFuncionario(),
-                            list.getCliente()                            
-                    ));
-                } 
+        if(evt.getClickCount()==2){
+            for(Venda venda : Staticas.getListaStaticaVenda()){
+                Staticas.getListaStaticaVenda().remove(); 
             }
-            if(checkBoxAjuda.isSelected()){
-                JOptionPane.showMessageDialog(null, "feche a janela e clique no botão ok para usar esta venda");
+            String valor = tableVenda.getValueAt(tableVenda.getSelectedRow(), 0)+"";
+            int codigo = Integer.parseInt(valor);
+            List<Venda> listvenda = this.getVendaPorId(codigo);
+            
+            for (Venda list : listvenda) {
+                Staticas.getListaStaticaVenda().add( new Venda(
+                        list.getId(),
+                        list.getDataEfetuada(),
+                        list.getFuncionario(),
+                        list.getCliente()
+                ));
             }
-        }catch(SQLException ex){
-            System.out.println("Erro: " + ex.getMessage());
+        }
+        if(checkBoxAjuda.isSelected()){
+            JOptionPane.showMessageDialog(null, "feche a janela e clique no botão ok para usar esta venda");
         }
     }//GEN-LAST:event_tableVendaMouseClicked
 

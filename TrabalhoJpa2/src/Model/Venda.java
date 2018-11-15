@@ -24,7 +24,6 @@ public class Venda implements Serializable{
     @Column(name = "ID")
     private int id;  
     
-    @SwingColumn(description = "Data",colorOfBackgound = "")
     @Temporal(TemporalType.DATE)
     @Column(name = "DATA_EFETUADA", nullable = false)
     private Date dataEfetuada;

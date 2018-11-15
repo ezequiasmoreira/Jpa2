@@ -37,14 +37,13 @@ public class Funcionario implements Serializable{
     private String cpf;
     
     @Column(name = "BAIRRO",length = 100, nullable = false)
+    @SwingColumn(description = "Bairro",colorOfBackgound = "")
     private String bairro;
     
     @Column(name = "ENDERECO",length = 250, nullable = false)
     @SwingColumn(description = "Endereço",colorOfBackgound = "")
     private String endereco;
     
-    
-    @SwingColumn(description = "Data",colorOfBackgound = "")
     @Temporal(TemporalType.DATE)
     @Column(name = "NASCIMENTO", nullable = false)
     private Date dataNascimento;

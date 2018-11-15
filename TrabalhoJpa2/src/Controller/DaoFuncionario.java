@@ -30,7 +30,7 @@ public class DaoFuncionario {
         return query.getResultList();
     }
     public List<Funcionario> getFuncionarioList(String filtro){
-        String HQL="select f from Fornecedor f where f.nome like ?1 order by f.nome";
+        String HQL="select f from Funcionario f where f.nome like ?1 order by f.nome";
         Query query = Dados.getEntity().createQuery(HQL);
         query.setParameter(1, "%"+filtro.toUpperCase()+"%");
         return query.getResultList();      

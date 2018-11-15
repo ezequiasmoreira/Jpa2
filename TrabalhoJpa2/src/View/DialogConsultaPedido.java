@@ -7,22 +7,16 @@ package View;
 
 import Controller.DaoFuncionario;
 import Controller.DaoPedidoItens;
-import Controller.DaoProduto;
 import Controller.DaoVenda;
 import Model.Funcionario;
 import Model.PedidoItens;
-import Model.Produto;
-import Model.Venda;
 import TDO.PesquisaPedido;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Vector;;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -58,7 +52,7 @@ public class DialogConsultaPedido extends javax.swing.JDialog {
             if (radioTodos.isSelected()){
                 listStatus.add(pedido); 
             }else{
-                if (pedido.getProduto().getStatus() == 0){
+                if (pedido.getProduto().getStatus() == status){
                     listStatus.add(pedido);
                 }              
             }
@@ -189,6 +183,7 @@ public class DialogConsultaPedido extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa de pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);

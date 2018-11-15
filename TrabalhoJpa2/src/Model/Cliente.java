@@ -36,15 +36,14 @@ public class Cliente implements Serializable{
     @Column(name = "CPF",length = 14, nullable = false)
     private String cpf;
     
+    @SwingColumn(description = "Bairro",colorOfBackgound = "")
     @Column(name = "BAIRRO",length = 100, nullable = false)
     private String bairro;
     
     @Column(name = "ENDERECO",length = 250, nullable = false)
     @SwingColumn(description = "Endereço",colorOfBackgound = "")
-    private String endereco;
+    private String endereco;    
     
-    
-    @SwingColumn(description = "Data",colorOfBackgound = "")
     @Temporal(TemporalType.DATE)
     @Column(name = "nascimento", nullable = false)
     private Date dataNascimento;
@@ -89,7 +88,7 @@ public class Cliente implements Serializable{
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = nome.trim().isEmpty()?"DEFAULT":nome.toUpperCase();;
     }
     
     public String getCpf() {

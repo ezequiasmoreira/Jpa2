@@ -28,7 +28,6 @@ public class Produto  implements Serializable{
     @Column(name = "NOME",length = 100, nullable = false)
     private String nome;   
     
-    @SwingColumn(description = "Validade",colorOfBackgound = "")
     @Temporal(TemporalType.DATE)
     @Column(name = "VALIDADE", nullable = false)
     private Date dataValidade;
@@ -36,6 +35,8 @@ public class Produto  implements Serializable{
     @Column(name = "PRECO_CUSTO", nullable = false)
     private double precoCusto;
     
+    
+    @SwingColumn(description = "Preço",colorOfBackgound = "")
     @Column(name = "PRECO_VENDA", nullable = false)
     private double precoVenda;
     
@@ -47,6 +48,8 @@ public class Produto  implements Serializable{
     @Column(name = "STATUS", nullable = false)
     private int status;
     
+    
+    @SwingColumn(description = "Saldo",colorOfBackgound = "")
     @Column(name = "SALDO", nullable = false)
     private Double saldo;
     

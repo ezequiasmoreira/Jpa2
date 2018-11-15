@@ -64,26 +64,26 @@ public class DialogFuncionario extends javax.swing.JDialog {
        DefaultComboBoxModel cbm = new DefaultComboBoxModel(TipoSexo.values());
         comboSexo.setModel(cbm);
     }
-    private void carregaCidade() throws SQLException{
+    private void carregaCidade(){
         List<Cidade> lista = cidade.getCidadeList();
         tableCidade.setModel(
             new MyTableModel(Cidade.class, lista, tableCidade)
         );  
     }
-    private void carregaCidade(String filtro) throws SQLException{        
+    private void carregaCidade(String filtro){        
         List<Cidade> lista = cidade.getCidadeList(filtro);
         tableCidade.setModel(
             new MyTableModel(Cidade.class, lista, tableCidade)
         ); 
     }
     
-    private void carregaFuncionarios() throws SQLException{
+    private void carregaFuncionarios(){
         List<Funcionario> lista = dao.getFuncionarioList();
         tableFuncionario.setModel(
             new MyTableModel(Funcionario.class, lista, tableFuncionario)
         );
     }
-    private void carregaFuncionarios(String filtro) throws SQLException{
+    private void carregaFuncionarios(String filtro){
         List<Funcionario> lista = dao.getFuncionarioList(filtro);
         tableFuncionario.setModel(
             new MyTableModel(Funcionario.class, lista, tableFuncionario)
@@ -469,14 +469,9 @@ public class DialogFuncionario extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        
-        try {
-            this.carregaSexo();
-            this.carregaCidade();
-            this.carregaFuncionarios();
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.carregaSexo();
+        this.carregaCidade();
+        this.carregaFuncionarios();
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -490,12 +485,7 @@ public class DialogFuncionario extends javax.swing.JDialog {
     }//GEN-LAST:event_tableFuncionarioMouseClicked
 
     private void buttonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFiltrarActionPerformed
-        try {
-            // TODO add your handling code here:
-            this.carregaFuncionarios(textFiltro.getText());
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.carregaFuncionarios(textFiltro.getText());
     }//GEN-LAST:event_buttonFiltrarActionPerformed
 
     private void buttonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverActionPerformed
@@ -549,11 +539,7 @@ public class DialogFuncionario extends javax.swing.JDialog {
 
     private void buttonPesquisarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarCidadeActionPerformed
         //pesquisa de cidade
-        try {
-            this.carregaCidade(textCidade.getText());
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.carregaCidade(textCidade.getText());
         
     }//GEN-LAST:event_buttonPesquisarCidadeActionPerformed
 

@@ -104,7 +104,7 @@ public class DialogCLiente extends javax.swing.JDialog {
         textNome.requestFocus();
     }
     //cria um objeto a partir da tela
-    private Cliente populateObject() throws ParseException, SQLException{
+    private Cliente populateObject() throws ParseException{
         
         Date data = sdf.parse(textDataNascimento.getText());
         int idCidade = 0;
@@ -503,7 +503,7 @@ public class DialogCLiente extends javax.swing.JDialog {
             dao.deleteCliente(populateObject());
             this.iniciaComponentes();
             this.carregaClientes();
-        }catch(SQLException | ParseException ex){
+        }catch(ParseException ex){
             System.out.println("Erro: " + ex.getMessage());
         }
     }//GEN-LAST:event_buttonRemoverActionPerformed
@@ -522,13 +522,12 @@ public class DialogCLiente extends javax.swing.JDialog {
             }
             this.iniciaComponentes();
             this.carregaClientes();
-        }catch(SQLException | ParseException ex){
+        }catch(ParseException ex){
             System.out.println("Erro: " + ex.getMessage());
         }
     }//GEN-LAST:event_buttonSalvarActionPerformed
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        // TODO add your handling code here:
         this.iniciaComponentes();
     }//GEN-LAST:event_buttonNovoActionPerformed
 

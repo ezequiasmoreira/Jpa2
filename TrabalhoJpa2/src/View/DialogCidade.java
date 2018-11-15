@@ -105,6 +105,7 @@ public class DialogCidade extends javax.swing.JDialog {
 
         jLabel3.setText("Estado");
 
+        textId.setEditable(false);
         textId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textIdActionPerformed(evt);

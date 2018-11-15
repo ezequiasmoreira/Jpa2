@@ -3,6 +3,7 @@ package TDO;
 
 import Model.PedidoItens;
 import Model.SwingColumn;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PesquisaPedido {
@@ -20,7 +21,8 @@ public class PesquisaPedido {
     private String nomeDoFuncionario;
     @SwingColumn(description = "Data",colorOfBackgound = "")
     private Date dataDaVenda;
-
+    private final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    
     public PesquisaPedido(PedidoItens pedidoItens) {
         this.codigoDaVenda = pedidoItens.getVenda().getId();
         this.codigoDoProduto = pedidoItens.getProduto().getId();
@@ -55,8 +57,8 @@ public class PesquisaPedido {
         return nomeDoFuncionario;
     }
 
-    public Date getDataDaVenda() {
-        return dataDaVenda;
+    public String getDataDaVenda() {        
+        return formato.format(dataDaVenda);
     }
     
     

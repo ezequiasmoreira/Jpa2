@@ -15,6 +15,7 @@ import Model.Produto;
 import Model.Funcionario;
 import Model.PedidoItens;
 import Model.Venda;
+import TDO.PesquisaVenda;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,8 +86,14 @@ public class DialogVenda extends javax.swing.JDialog {
     
     private void carregaPedidoItens(int IdVenda){
         List<PedidoItens> lista = pedidoItens.getPedidoItensList(IdVenda);
+        //converte lista de pedidos em um TDO
+        LinkedList<PesquisaVenda> listPesquisaVendas = new LinkedList();
+        for(PedidoItens pedidoItens: lista ){
+            PesquisaVenda pesquisaVenda = new PesquisaVenda(pedidoItens);
+            listPesquisaVendas.add(pesquisaVenda);
+        }
         tablePedidoItens.setModel(
-            new MyTableModel(PedidoItens.class, lista, tablePedidoItens)
+            new MyTableModel(PesquisaVenda.class, listPesquisaVendas, tablePedidoItens)
         );        
     }
     

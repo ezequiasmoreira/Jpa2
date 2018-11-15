@@ -13,6 +13,7 @@ import Model.Funcionario;
 import Model.PedidoItens;
 import Model.Produto;
 import Model.Venda;
+import TDO.PesquisaPedido;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,14 +34,20 @@ public class DialogConsultaPedido extends javax.swing.JDialog {
     private DaoPedidoItens dao = new DaoPedidoItens();
     private SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     
-    private void carregaFuncionario() throws SQLException{       
+    private void carregaFuncionario(){       
         DefaultComboBoxModel cbm = new DefaultComboBoxModel(
         new Vector(new DaoFuncionario().getFuncionarioList()));
         comboFuncionario.setModel(cbm); 
     }
-    private void carregarTabelaConsultaVenda(LinkedList<PedidoItens> listfiltos) throws SQLException{   
+    private void carregarTabelaConsultaVenda(LinkedList<PedidoItens> listfiltos){
+        //converte lista de pedidos em um TDO
+        LinkedList<PesquisaPedido> listPesquisaPedidos = new LinkedList();
+        for(PedidoItens pedidoItens: listfiltos ){
+            PesquisaPedido pesquisaPedido = new PesquisaPedido(pedidoItens);
+            listPesquisaPedidos.add(pesquisaPedido);
+        }
         tableConsultaVenda.setModel(
-            new MyTableModel(PedidoItens.class, listfiltos, tableConsultaVenda)
+            new MyTableModel(PesquisaPedido.class, listPesquisaPedidos, tableConsultaVenda)
         );
     }
     private List<PedidoItens> filtraPorStatus(List<PedidoItens> pedidos){
@@ -123,14 +130,14 @@ public class DialogConsultaPedido extends javax.swing.JDialog {
         
         return listVendas;
     }
-    private void fimDosFiltrosdePedido(List<PedidoItens> ultimaListas) throws SQLException{
+    private void fimDosFiltrosdePedido(List<PedidoItens> ultimaListas){
         LinkedList<PedidoItens> listfiltos =  new LinkedList<>();
         for (PedidoItens ultimaLista : ultimaListas) {
             listfiltos.add(ultimaLista);
         }  
         this.carregarTabelaConsultaVenda(listfiltos);
     }
-    private void filtraPedido() throws SQLException{
+    private void filtraPedido(){
         
         //busca todos os pedidos 
         List<PedidoItens> pedidos           =  dao.getPedidoItensList();
@@ -325,22 +332,14 @@ public class DialogConsultaPedido extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
-       try { 
-           this.filtraPedido();
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        this.filtraPedido();
     }//GEN-LAST:event_buttonPesquisarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            Date data = new Date(System.currentTimeMillis());
-            textDataInicial.setText(formato.format(data));
-            textDataFinal.setText(formato.format(data));
-            this.carregaFuncionario();
-        } catch (SQLException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        Date data = new Date(System.currentTimeMillis());
+        textDataInicial.setText(formato.format(data));
+        textDataFinal.setText(formato.format(data));
+        this.carregaFuncionario();
     }//GEN-LAST:event_formWindowOpened
 
     private void checkBoxFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBoxFuncionarioMouseClicked

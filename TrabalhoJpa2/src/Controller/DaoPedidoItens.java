@@ -29,7 +29,7 @@ public class DaoPedidoItens {
         Dados.getEntity().getTransaction().commit();
     }
     public void deleteColecaoPedidoItens(int fk){
-        String HQL="delete from PedidoItens p where p.id_venda = ?1";
+        String HQL="delete from PedidoItens p where p.venda.id = ?1";
         Query query = Dados.getEntity().createQuery(HQL);
         query.setParameter(1, fk);
     }
@@ -43,7 +43,7 @@ public class DaoPedidoItens {
         return query.getResultList();
     }
     public List<PedidoItens> getPedidoVendaList(){
-        String HQL="select p from PedidoItens p group by p.id_venda";
+        String HQL="select p from PedidoItens p group by p.venda.id";
         Query query = Dados.getEntity().createQuery(HQL);
         return query.getResultList(); 
     }

@@ -33,6 +33,7 @@ public class DaoCidade {
         Query query = Dados.getEntity().createQuery(HQL);
         return query.getResultList();
     }
+    
     public List<Cidade> getCidadeList(String filtro){
         String HQL="select c from Cidade c where c.nome like ?1 order by c.nome";
         Query query = Dados.getEntity().createQuery(HQL);
